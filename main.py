@@ -45,10 +45,24 @@ def mainmenu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard_list = []
     keyboard_list.append('Пустая кнопка')
+    keyboard_list.append('Дни рождения')
     keyboard.add(*keyboard_list, row_width=2)
 
     mes = 'Добро пожаловать'
     BOT.send_message(message.chat.id, mes, reply_markup=keyboard)
+
+
+@BOT.message_handler(func=lambda message: message.text == 'Дни рождения')
+def mainmenu_choice_showdatar(message):
+    """Показать дни рождения работников"""
+    mes = ''
+    workers_tuple = db.db_users.get_users_tuple()
+    worker_item: User
+    for worker_item in workers_tuple:
+        datar_text = datetime.datetime.strftime(worker_item.datar, '%d.%m.%Y')
+        mes += f'{worker_item.fio} - дата рождения: {datar_text}\n'
+
+    BOT.send_message(message.chat.id, mes)
 
 
 if __name__ == '__main__':
