@@ -45,10 +45,23 @@ def mainmenu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard_list = []
     keyboard_list.append('Пустая кнопка')
+    keyboard_list.append('Категории работников')
     keyboard.add(*keyboard_list, row_width=2)
 
     mes = 'Добро пожаловать'
     BOT.send_message(message.chat.id, mes, reply_markup=keyboard)
+
+
+@BOT.message_handler(func=lambda message: message.text == 'Категории работников')
+def mainmenu_choice_showcategories(message):
+    """Показать категории работников"""
+    mes = ''
+    workers_tuple = db.db_users.get_users_tuple()
+    worker_item: User
+    for worker_item in workers_tuple:
+        mes += f'{worker_item.fio} - категория:{worker_item}\n'
+
+    BOT.send_message(message.chat.id, mes)
 
 
 if __name__ == '__main__':

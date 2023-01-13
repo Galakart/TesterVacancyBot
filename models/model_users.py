@@ -1,5 +1,5 @@
 """Модели юзеров, ролей, итд"""
-from sqlalchemy import BigInteger, Column, String
+from sqlalchemy import BigInteger, Column, Integer, String
 
 from models.base import Base
 
@@ -12,3 +12,4 @@ class User(Base):
 
     id = Column(BigInteger, primary_key=True)
     fio = Column(String(100))
+    category = Column(Integer)
